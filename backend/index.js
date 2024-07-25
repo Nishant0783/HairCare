@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 dotenv.config();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 3000;
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
