@@ -98,6 +98,9 @@ Please format your response as a JSON object with the following structure:
     messages: messages
   });
 
+  // Delete the file after processing
+  await fs.unlink(file.path);
+
   return JSON.parse(response.content[0].text);
 }
 
@@ -150,8 +153,12 @@ Please format your response as a JSON object with the following structure:
     messages: messages
   });
 
+  // Delete the file after processing
+  await fs.unlink(file.path);
+
   return JSON.parse(response.content[0].text);
 }
+
 
 app.post('/analyzeImage', upload.single('file'), async (req, res) => {
   try {
