@@ -2,14 +2,19 @@ import React, { useState } from 'react';
 import FormStep from './FormStep';
 import './index.css';
 import Report from './Report.jsx';
-import axios from 'axios'
+import axios from 'axios';
 
 const App = () => {
   const [step, setStep] = useState(1);
-  const [imageAnalysis, setImageAnalysis] = useState(null);
+  const [imageAnalysis, setImageAnalysis] = useState(null); 
   const [report, setReport] = useState(null);
   const [error, setError] = useState('');
   const [isHairfall, setIsHairFall] = useState(null);
+
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  };
 
   const personalProfileFields = [
     { type: 'text', name: 'fullName', placeholder: 'Full Name' },
@@ -19,15 +24,15 @@ const App = () => {
 
   const hairEvaluationFields = [
     { type: 'file', name: 'file', placeholder: 'Choose File' },
-    { type: 'date', name: 'date', placeholder: 'DOB' },
+    { type: 'date', name: 'date', placeholder: 'D.O.B', max: getTodayDate()}, // Restricting the date input
     { type: 'select', name: 'stressLevel', placeholder: 'Select Stress Level', options: ['Low', 'Medium', 'High'] },
     { type: 'select', name: 'familyHistory', placeholder: 'Family History of Hair Loss?', options: ['Yes', 'No'] },
   ];
 
   const handlePersonalProfileSubmit = (data) => {
-    localStorage.setItem('name', data.fullName)
-    localStorage.setItem('number', data.phoneNumber)
-    localStorage.setItem('email', data.email)
+    localStorage.setItem('name', data.fullName);
+    localStorage.setItem('number', data.phoneNumber);
+    localStorage.setItem('email', data.email);
     setStep(2);
   };
 
@@ -41,13 +46,13 @@ const App = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log("repsonse of image analysis: ", response)
-      setError('')
+      console.log("Response of image analysis: ", response);
+      setError('');
       setImageAnalysis(response.data);
-      setIsHairFall(response.data.isHairfall)
+      setIsHairFall(response.data.isHairfall);
     } catch (error) {
       console.error('Error analyzing image:', error);
-      setError(error.message)
+      setError(error.message);
     }
   };
 
@@ -66,19 +71,23 @@ const App = () => {
     formData.append('stressLevel', data.stressLevel);
     formData.append('familyHistory', data.familyHistory);
 
+    localStorage.setItem('dob', data.date);
+    localStorage.setItem('stress', data.stressLevel);
+    localStorage.setItem('history', data.familyHistory);
+
     try {
       const response = await axios.post('https://haircare-xmpz.onrender.com/submit', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setError('')
-      console.log("Response of whole analysis is: ", response)
+      setError('');
+      console.log("Response of whole analysis is: ", response);
       setReport(response.data.report);
       setStep(3);
     } catch (error) {
       console.error('Error generating report:', error);
-      setError("Error in generating report")
+      setError("Error in generating report");
     }
   };
 
@@ -107,7 +116,7 @@ const App = () => {
       {step === 3 && (
         <Report report={report} />
       )}
-      {isHairfall == false && <p>The image uploaded is not a hairfall image. Please re-upload image</p>}
+      {isHairfall === false && <p>The image uploaded is not a hairfall image. Please re-upload image</p>}
       {error && error !== '' && <p>{error}</p>}
     </div>
   );

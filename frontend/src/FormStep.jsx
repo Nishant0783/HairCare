@@ -65,6 +65,7 @@ const FormStep = ({ formTitle, formFields, buttonText, onSubmit, onImageUpload, 
                   name={field.name}
                   placeholder={field.placeholder}
                   onChange={handleChange}
+                  max={field.max}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
                 {field.type == "file" && <button
