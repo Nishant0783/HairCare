@@ -84,7 +84,7 @@ Please format your response as a JSON object with the following structure:
           type: "image",
           source: {
             type: "base64",
-            media_type: "image/jpeg",
+            media_type: file.mimetype,
             data: imageBase64
           }
         }
@@ -139,7 +139,7 @@ Please format your response as a JSON object with the following structure:
           type: "image",
           source: {
             type: "base64",
-            media_type: "image/jpeg",
+            media_type: file.mimetype,
             data: imageBase64
           }
         }
