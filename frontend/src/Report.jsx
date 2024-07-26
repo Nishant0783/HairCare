@@ -107,6 +107,5 @@ const Report = ({ report }) => {
     </div>
 )
 }
-};
 
 export default Report;
