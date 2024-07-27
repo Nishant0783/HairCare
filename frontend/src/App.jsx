@@ -45,7 +45,7 @@ const App = () => {
     setUploadedImage(file);
 
     try {
-      const response = await axios.post('http://localhost:5000/analyzeImage', formData, {
+      const response = await axios.post('https://haircare-xmpz.onrender.com/analyzeImage', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -55,7 +55,6 @@ const App = () => {
       setImageAnalysis(response.data);
       if(!response.data.isHairfall) {
         setError('Uploaded image is not a hairfall image');
-        return
       }
       setIsHairFall(response.data.isHairfall);
       setIsDisabled(!(response.data.isHairfall))
@@ -92,7 +91,7 @@ const App = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/submit', formData, {
+      const response = await axios.post('https://haircare-xmpz.onrender.com/submit', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
