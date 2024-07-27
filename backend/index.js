@@ -25,8 +25,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Define Mongoose schemas and models
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  phoneNumber: { type: String, required: true, unique: true },
+  email: { type: String, required: true },
+  phoneNumber: { type: String, required: true },
   stressLevel: { type: String, enum: ['Low', 'Medium', 'High'], required: true },
   familyHistory: { type: String, enum: ['Yes', 'No'], required: true },
   image: { type: String, required: true },
