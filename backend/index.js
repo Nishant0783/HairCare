@@ -27,7 +27,6 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   phoneNumber: { type: String, required: true, unique: true },
-  // age: { type: Number, required: true },
   stressLevel: { type: String, enum: ['Low', 'Medium', 'High'], required: true },
   familyHistory: { type: String, enum: ['Yes', 'No'], required: true },
   image: { type: String, required: true },
@@ -159,13 +158,15 @@ Please format your response as a JSON object with the following structure:
   return JSON.parse(response.content[0].text);
 }
 
-
 app.post('/analyzeImage', upload.single('file'), async (req, res) => {
   try {
-    const result = await analyzeImage(req.file);
-    console.log("Result of image analysis is: ", result)
-    res.status(200).json(result);
+    if (!req.file) {
+      throw new Error('No file uploaded');
+    }
 
+    const result = await analyzeImage(req.file);
+    console.log("Result of image analysis is: ", result);
+    res.status(200).json(result);
   } catch (error) {
     console.error('Error in /analyzeImage route:', error);
     res.status(500).json({ message: 'Error analyzing image', error: error.message });
@@ -174,15 +175,21 @@ app.post('/analyzeImage', upload.single('file'), async (req, res) => {
 
 app.post('/submit', upload.single('file'), async (req, res) => {
   try {
-    const { fullName, email, phoneNumber, age, stressLevel, familyHistory } = req.body;
-    console.log("name is: ", fullName)
+    console.log('Request body:', req.body);
+    console.log('Uploaded file:', req.file);
+
+    if (!req.file) {
+      throw new Error('No file uploaded');
+    }
+
+    const { fullName, email, phoneNumber, date, stressLevel, familyHistory } = req.body;
+    console.log("name is: ", fullName);
 
     // Save user data to MongoDB
     const newUser = new User({
       name: fullName,
       email,
       phoneNumber,
-      // age,
       stressLevel,
       familyHistory,
       image: req.file.path,
@@ -198,16 +205,17 @@ app.post('/submit', upload.single('file'), async (req, res) => {
     });
     await newReport.save();
 
-    console.log("Result of whole analysis is: ", report)
-    res.status(200).json({ 
+    console.log("Result of whole analysis is: ", report);
+    res.status(200).json({
       message: "Data received and analyzed successfully",
-      report: report 
+      report: report,
     });
   } catch (error) {
-    console.error('Error in /submit route:', error); 
+    console.error('Error in /submit route:', error);
     res.status(500).json({ message: 'Error generating report', error: error.message });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

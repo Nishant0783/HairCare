@@ -3,13 +3,17 @@ import FormStep from './FormStep';
 import './index.css';
 import Report from './Report.jsx';
 import axios from 'axios';
+import ImageUpload from './components/ImageUpload.jsx';
 
 const App = () => {
   const [step, setStep] = useState(1);
-  const [imageAnalysis, setImageAnalysis] = useState(null); 
+  const [imageAnalysis, setImageAnalysis] = useState(null);
   const [report, setReport] = useState(null);
   const [error, setError] = useState('');
   const [isHairfall, setIsHairFall] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true)
 
   const getTodayDate = () => {
     const today = new Date();
@@ -23,8 +27,7 @@ const App = () => {
   ];
 
   const hairEvaluationFields = [
-    { type: 'file', name: 'file', placeholder: 'Choose File' },
-    { type: 'date', name: 'date', placeholder: 'D.O.B', max: getTodayDate()}, // Restricting the date input
+    { type: 'date', name: 'date', placeholder: 'D.O.B', max: getTodayDate() },
     { type: 'select', name: 'stressLevel', placeholder: 'Select Stress Level', options: ['Low', 'Medium', 'High'] },
     { type: 'select', name: 'familyHistory', placeholder: 'Family History of Hair Loss?', options: ['Yes', 'No'] },
   ];
@@ -39,9 +42,10 @@ const App = () => {
   const handleImageUpload = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
+    setUploadedImage(file);
 
     try {
-      const response = await axios.post('https://haircare-xmpz.onrender.com/analyzeImage', formData, {
+      const response = await axios.post('http://localhost:5000/analyzeImage', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -49,34 +53,46 @@ const App = () => {
       console.log("Response of image analysis: ", response);
       setError('');
       setImageAnalysis(response.data);
+      if(!response.data.isHairfall) {
+        setError('Uploaded image is not a hairfall image');
+        return
+      }
       setIsHairFall(response.data.isHairfall);
+      setIsDisabled(!(response.data.isHairfall))
     } catch (error) {
       console.error('Error analyzing image:', error);
-      setError(error.message);
+      setError('Uploaded image is not a hairfall image');
+      setIsHairFall(false);
+      setIsDisabled(true)
     }
   };
 
   const handleHairEvaluationSubmit = async (data) => {
-    if (!imageAnalysis) {
+    if (!imageAnalysis || !uploadedImage) {
       alert('Please upload and analyze an image first.');
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', data.file);
+    formData.append('file', uploadedImage);
     formData.append('fullName', localStorage.getItem('name'));
     formData.append('phoneNumber', localStorage.getItem('number'));
     formData.append('email', localStorage.getItem('email'));
     formData.append('date', data.date);
     formData.append('stressLevel', data.stressLevel);
     formData.append('familyHistory', data.familyHistory);
-
+    // Inspect FormData content
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
     localStorage.setItem('dob', data.date);
     localStorage.setItem('stress', data.stressLevel);
     localStorage.setItem('history', data.familyHistory);
 
+    setLoading(true);
+
     try {
-      const response = await axios.post('https://haircare-xmpz.onrender.com/submit', formData, {
+      const response = await axios.post('http://localhost:5000/submit', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -88,6 +104,8 @@ const App = () => {
     } catch (error) {
       console.error('Error generating report:', error);
       setError("Error in generating report");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,21 +121,25 @@ const App = () => {
         />
       )}
       {step === 2 && (
-        <FormStep
-          formTitle="Hair Evaluation"
-          formFields={hairEvaluationFields}
-          buttonText="Generate Hair Report"
-          onSubmit={handleHairEvaluationSubmit}
-          isLastStep={true}
-          onImageUpload={handleImageUpload}
-          showButton={isHairfall}
-        />
+        <>
+          <FormStep
+            formTitle="Hair Evaluation"
+            formFields={hairEvaluationFields}
+            buttonText="Generate Hair Report"
+            onSubmit={handleHairEvaluationSubmit}
+            isLastStep={true}
+            showButton={isHairfall}
+            isImage={true}
+            isLoading={loading}
+            imageComponent={<ImageUpload onImageUpload={handleImageUpload} />}
+            isDisabled = {isDisabled}
+          />
+        </>
       )}
       {step === 3 && (
         <Report report={report} />
       )}
-      {isHairfall === false && <p>The image uploaded is not a hairfall image. Please re-upload image</p>}
-      {error && error !== '' && <p>{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 };
