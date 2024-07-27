@@ -185,6 +185,9 @@ app.post('/submit', upload.single('file'), async (req, res) => {
     const { fullName, email, phoneNumber, date, stressLevel, familyHistory } = req.body;
     console.log("name is: ", fullName);
 
+    const imageBuffer = await fs.readFile(file.path);
+    const imageBase64 = imageBuffer.toString('base64');
+
     // Save user data to MongoDB
     const newUser = new User({
       name: fullName,
@@ -192,7 +195,7 @@ app.post('/submit', upload.single('file'), async (req, res) => {
       phoneNumber,
       stressLevel,
       familyHistory,
-      image: req.file.path,
+      image: imageBase64,
     });
     const savedUser = await newUser.save();
 
