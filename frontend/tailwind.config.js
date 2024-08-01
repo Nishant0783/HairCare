@@ -6,15 +6,5 @@ export default {
   ],
   theme: {
     extend: {},
-  },
-  plugins: [
-    function({addUtilities}) {
-      const extendLinethrough = {
-        '.line-through': {
-          'text-decoration-color': 'red'
-        },
-      }
-      addUtilities(extendLinethrough)
-    }
-  ],
+  }
 }
