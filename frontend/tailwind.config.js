@@ -7,8 +7,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'title': ['Oswald', 'sans-serif'],
-        'content': ['Quattrocento', 'sans-serif']
+        'title': ['Roboto', 'sans-serif'],
+        'content': ['Nunito sans', 'sans-serif']
+      },
+      colors: {
+        'btn': '#047FFF',
+        'btn-text': '#FFFFFF',
+        'content': '#31304E'
       }
     },
   }

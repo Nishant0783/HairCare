@@ -12,12 +12,12 @@ const Navbar = () => {
     };
 
     return (
-        <nav className='bg-white px-[30px] py-[10px]'>
+        <nav className='bg-white py-[10px]'>
             <div className='grid grid-cols-2 bg-transparent'>
                 <div className='col-span-1 bg-transparent text-3xl font-bold text-blue-600 font-title'>
                     <Link to="/">LOGO</Link>
                 </div>
-                <div className='col-span-1 bg-transparent text-[1rem] font-semibold text-[#31304E] font-title ml-auto my-auto'>
+                <div className='col-span-1 bg-transparent text-[1rem] font-semibold text-content font-title ml-auto my-auto'>
                     <div className='flex gap-x-[50px] bg-transparent max-sm:hidden'>
                         {navItems.map((element) => (
                             <div key={element.id} className='bg-transparent'>
@@ -27,7 +27,7 @@ const Navbar = () => {
                     </div>
 
                     {/* Hamburger icon */}
-                    <div className='block sm:hidden text-3xl text-[#31304E]' onClick={toggleMobileMenu}>
+                    <div className='block sm:hidden text-3xl text-content' onClick={toggleMobileMenu}>
                         {isMobileMenuOpen ? <IoCloseSharp /> : <GiHamburgerMenu />}
                     </div>
                 </div>
