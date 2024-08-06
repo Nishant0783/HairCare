@@ -17,10 +17,10 @@ const Navbar = () => {
                 <div className='col-span-1 bg-transparent text-3xl font-bold text-blue-600 font-title'>
                     <Link to="/">LOGO</Link>
                 </div>
-                <div className='col-span-1 bg-transparent text-[1rem] font-semibold text-content font-title ml-auto my-auto'>
+                <div className='col-span-1 bg-transparent text-[0.9rem] lg:text-[1rem] font-semibold text-content font-title ml-auto my-auto'>
                     <div className='flex gap-x-[50px] bg-transparent max-sm:hidden'>
                         {navItems.map((element) => (
-                            <div key={element.id} className='bg-transparent'>
+                            <div key={element.id} className='bg-transparent hover:bg-gray-100 px-[10px] rounded-[5px] py-[5px]'>
                                 <Link to={element.link} className='bg-transparent'>{element.title}</Link>
                             </div>
                         ))}
