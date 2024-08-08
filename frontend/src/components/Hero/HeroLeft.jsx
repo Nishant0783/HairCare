@@ -1,7 +1,13 @@
 import React from 'react'
 import Button from '../Button/Button'
+import { useNavigate } from 'react-router-dom'
 
 const HeroLeft = () => {
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate('take-test')
+    }
+
     return (
         <div className='flex flex-col align-middle justify-center gap-y-[10px] lg:gap-y-[50px] md:my-0 my-[10px]'>
             <div className='flex flex-col max-lg:text-center'>
@@ -17,10 +23,12 @@ const HeroLeft = () => {
             </div>
             <div className='max-lg:mx-auto'>
                 <Button 
+                    type='button'
+                    onClick={handleClick}
                     bgColor={'bg-btn'}
                     content={'Take Online Test'}
                     contentColor={'text-btn-text'}
-                    extraClass={'px-[20px] py-[10px] lg:px-[80px] md:px-[50px] md:text-[1.2rem]'}
+                    extraClass={'px-[20px] py-[10px] lg:px-[80px] md:px-[50px] md:text-[1.2rem] hover:bg-blue-700'}
                 />
             </div>
         </div>
