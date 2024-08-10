@@ -4,29 +4,32 @@ import Review from '../components/Review/Review'
 import { reviews } from '../components/Review/review'
 import Form from '../components/form/Form'
 import Form2 from '../components/form/Form2'
+import FormLayout from '../components/Form-Layout/FormLayout'
+import FormComplex from '../components/form/FormComplex'
 
 
 const OnlineTest = () => {
     return (
-        <>
-            <div className='grid md:grid-cols-3 gap-x-[30px] '>
-            <div className='col-span-2 my-[30px]'>
-                    {/* <Form /> */}
-                    <Form2 />
-                </div>
-                <div className='col-span-1 h-[100vh] absolute right-0 overflow-hidden'>
-                    <img src={formLeft} alt='formLeft' className='h-[100vh] absolute right-0 w-[37vw] z-0' />
-                    {
-                        reviews.map((review) => (
-                            <Review
-                                name={review.name}
-                                stars={review.stars}
-                                content={review.content}
-                            />
-                        ))
-                    }
-
-                </div>
+        <>  
+            <div className='flex flex-col items-center justify-center min-h-screen'>
+                {/* <FormLayout 
+                    heading={'Fill in some details to get started'}
+                    subheading={''}
+                    step={1}
+                    btnType={'button'}
+                    btnContent={'Next'}
+                    btnClass={'px-[20px] py-[10px] lg:px-[80px] md:px-[50px] md:text-[1.2rem] hover:bg-blue-700'}
+                    children={<Form />}
+                /> */}
+                <FormLayout 
+                    heading='Just, One more Step'
+                    subheading='Fill in the details accurately, to get perfect results'
+                    step={2}
+                    btnType={'submit'}
+                    btnContent={'Analyse'}
+                    btnClass={'px-[20px] py-[10px] lg:px-[80px] md:px-[50px] md:text-[1.2rem] hover:bg-blue-700'}
+                    children={<FormComplex />}
+                />
             </div>
         </>
     )

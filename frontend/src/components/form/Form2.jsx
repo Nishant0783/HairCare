@@ -1,29 +1,35 @@
 import React from 'react'
 import ImageUpload from '../ImageUpload/ImageUpload'
+import Button from '../Button/Button';
 
 const Form2 = () => {
     const today = new Date().toISOString().split('T')[0];
+    
     const handleImageUpload = () => {
         console.log("Image upload")
     }
 
+    const handleClick = () => {
+
+    }
+
     return (
-        <div className='flex flex-col gap-y-[40px]'>
-            <div className='text-[3.1rem] text-content font-title font-bold'>
+        <div className='flex flex-col gap-y-[40px] my-[30px]'>
+            <div className='md:text-[3rem] sm:text-[2rem] text-[1.5rem] text-content font-title font-bold'>
                 <p>Just, One more Step</p>
-                <p className='text-[1.5rem] font-normal'>Fill in the details accurately, to get perfect results</p>
+                <p className='sm:text-[1.5rem] text-[1rem] font-normal'>Fill in the details accurately, to get perfect results</p>
             </div>
-            <div className='flex flex-row gap-x-[55px]'>
-                <div className="w-[35%] h-[10px] bg-gray-400 rounded-lg"></div>
-                <div className="w-[35%] h-[10px] bg-btn rounded-lg"></div>
+            <div className='flex flex-row gap-x-[30px]'>
+                <div className="w-full h-[10px] bg-gray-400 rounded-lg"></div>
+                <div className="w-full h-[10px] bg-btn rounded-lg"></div>
             </div>
-            <div className='flex  text-content font-content gap-x-[30px]'>
+            <div className='flex flex-col text-content font-content gap-x-[30px] items-center gap-y-[50px]'>
                 <div className='flex flex-col gap-y-[5px] font-semibold'>
                     <span>Upload Image</span>
                     <ImageUpload onImageUpload={handleImageUpload} />
                 </div>
-                <div className="flex flex-col w-[250px] gap-y-[50px] justify-center">
-                    <div className="flex flex-col w-[250px] gap-y-[5px]">
+                <div className="flex w-full gap-x-[50px]">
+                    <div className="flex flex-col w-[50%] gap-y-[5px]">
                         <label htmlFor='dob' className='font-semibold'>Date of Birth</label>
                         <input
                             required
@@ -63,8 +69,8 @@ const Form2 = () => {
                 </div>
 
 
-                <div className="flex flex-col w-[250px] gap-y-[50px] justify-center">
-                    <div className="flex flex-col space-y-4">
+                <div className="flex w-full gap-x-[50px]">
+                    <div className="flex flex-col w-[50%] gap-y-[5px]">
                         <label className="text-lg font-semibold">Stress Level:</label>
                         <div className="flex items-center space-x-6">
                             <label className="flex items-center space-x-2">
@@ -133,6 +139,17 @@ const Form2 = () => {
                             </label>
                         </div>
                     </div>
+                </div>
+
+                <div>
+                <Button 
+                    type='button'
+                    onClick={handleClick}
+                    bgColor={'bg-btn'}
+                    content={'Analyse'}
+                    contentColor={'text-btn-text'}
+                    extraClass={'px-[20px] py-[10px] lg:px-[80px] md:px-[50px] md:text-[1.2rem] hover:bg-blue-700'}
+                />
                 </div>
 
             </div>

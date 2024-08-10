@@ -13,7 +13,8 @@ export default {
       colors: {
         'btn': '#047FFF',
         'btn-text': '#FFFFFF',
-        'content': '#31304E'
+        'content': '#31304E',
+        'label': '#6b7280'
       }
     },
   }
