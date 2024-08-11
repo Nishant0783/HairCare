@@ -7,10 +7,8 @@ import Button from '../Button/Button'
     3) children
     4) Button
 */
-const FormLayout = ({ heading='', subheading='', step = 1, btnType, btnContent, btnClass, children }) => {
-    const handleClick = () => {
 
-    }
+const FormLayout = ({ heading='', subheading='', step = 1, children }) => {
     return (
         <div className='flex flex-col'>
             <div className='flex flex-col'>
@@ -37,16 +35,7 @@ const FormLayout = ({ heading='', subheading='', step = 1, btnType, btnContent, 
                 {children}
 
                 {/* button */}
-                <div className='flex justify-center mt-[30px]'>
-                    <Button
-                        type={btnType}
-                        onClick={handleClick}
-                        bgColor={'bg-btn'}
-                        content={btnContent}
-                        contentColor={'text-btn-text'}
-                        extraClass={btnClass}
-                    />
-                </div>
+                
             </div>
         </div>
     )

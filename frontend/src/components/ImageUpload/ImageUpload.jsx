@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ImageUpload = ({ onImageUpload }) => {
+const ImageUpload = ({ onImageUpload, error=false }) => {
     const [image, setImage] = useState(null);
 
     const handleImageChange = (e) => {
@@ -17,10 +17,10 @@ const ImageUpload = ({ onImageUpload }) => {
 
     return (
         <div className='flex flex-col space-y-[10px]'>
-            <div className='text-label font-semibold font-content text-[1rem]'>
+            <div className={`${error ? 'text-red-500' : 'text-label'} font-semibold font-content text-[1rem]`}>
                 <label htmlFor='imageUpload'>Upload Image</label>
             </div>
-            <div className="md:w-[400px] md:h-[300px] w-full h-[200px] mb-[20px] border-2 border-dashed border-gray-300 rounded-lg overflow-hidden relative">
+            <div className={`md:w-[400px] md:h-[300px] w-full h-[200px] mb-[20px] border-2 border-dashed ${error ? 'border-red-500' : 'border-gray-300'} rounded-lg overflow-hidden relative`}>
                 <input
                     type="file"
                     accept="image/*"
