@@ -7,7 +7,13 @@ const initialState = {
         number: '',
     },
     step: 1,
-    isHairfall: null
+    isHairfall: false,
+    geneticDetails: {
+        dob: '',
+        gender: '',
+        familyHistory: '',
+        stressLevel: ''
+    }
 };
 
 const formSlice = createSlice({
@@ -22,9 +28,12 @@ const formSlice = createSlice({
         },
         setHairfall: (state, action) => {
             state.isHairfall = action.payload;
+        },
+        setGeneticDetails: (state, action) => {
+            state.geneticDetails = action.payload;
         }
     },
 });
 
-export const { setPersonalDetails, setStep, setHairfall } = formSlice.actions;
+export const { setPersonalDetails, setStep, setHairfall, setGeneticDetails } = formSlice.actions;
 export default formSlice.reducer;

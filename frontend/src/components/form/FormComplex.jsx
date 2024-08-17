@@ -4,6 +4,9 @@ import Input from '../Inputs/Input'
 import Button from '../Button/Button';
 import { validateForm } from '../../utils/formValidations';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setGeneticDetails } from '../../features/formSlice/formSlice';
+import axios from 'axios';
 
 const FormComplex = () => {
     const [formData, setFormData] = useState({
@@ -11,10 +14,14 @@ const FormComplex = () => {
         dob: '',
         gender: '',
         familyHistory: '',
-        stress: ''
+        stressLevel: ''
     })
     const [errors, setErrors] = useState([])
+    const [loading, setLoading] = useState(false)
+    const isHairfall = useSelector((state) => state.form.isHairfall);
+    const { name, email, number } = useSelector((state) => state.form.personalDetails)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const today = new Date().toISOString().split('T')[0];
 
@@ -34,15 +41,59 @@ const FormComplex = () => {
     };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        console.log("Analyse button clicked");
         e.preventDefault();
-        const errors = validateForm(formData)
-        if(errors.length > 0) {
-            setErrors(errors)   
-            return
+
+        // Validate form data
+        const errors = validateForm(formData);
+        console.log("errros are: ", errors)
+        if (errors.length > 0) {
+            setErrors(errors);
+            return;
         }
 
-        navigate('/result')
+        // Create FormData object
+        const formDataToSend = new FormData();
+        formDataToSend.append('file', formData.image); // Append the image file
+        formDataToSend.append('dob', formData.dob);
+        formDataToSend.append('gender', formData.gender);
+        formDataToSend.append('familyHistory', formData.familyHistory);
+        formDataToSend.append('stressLevel', formData.stressLevel);
+
+        // Add personal details
+        formDataToSend.append('username', name);
+        formDataToSend.append('email', email);
+        formDataToSend.append('number', number);
+        console.log("Form data to send: ", formDataToSend)
+
+        try {
+            setLoading(true);
+            console.log("Inside try")
+            // Update Redux store
+            dispatch(setGeneticDetails({
+                dob: formData.dob,
+                gender: formData.gender,
+                familyHistory: formData.familyHistory,
+                stressLevel: formData.stressLevel
+            }));
+
+            // Make the API request
+            const response = await axios.post('http://localhost:5000/api/v1/report/generateReport', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            console.log("Response from report: ", response.data);
+            // Handle response (e.g., navigate to another page or update the state)
+
+        } catch (error) {
+            console.log("Error in form complex: ", error);
+            // Handle error (e.g., show an error message)
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -96,8 +147,8 @@ const FormComplex = () => {
                         <div>
                             <Input
                                 type='select'
-                                name='stress'
-                                id='stress'
+                                name='stressLevel'
+                                id='stressLevel'
                                 label='Stress Level'
                                 options={[
                                     { value: '', label: 'Choose option' },
@@ -119,7 +170,7 @@ const FormComplex = () => {
                         bgColor={'bg-btn'}
                         content={'Analyse'}
                         contentColor={'text-btn-text'}
-                        extraClass={'px-[20px] py-[10px] lg:px-[80px] md:px-[50px] md:text-[1.2rem] hover:bg-blue-700'}
+                        extraClass={`px-[20px] py-[10px] lg:px-[80px] md:px-[50px] md:text-[1.2rem] hover:bg-blue-700 ${isHairfall ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                     />
                 </div>
             </form>

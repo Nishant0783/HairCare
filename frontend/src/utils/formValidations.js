@@ -2,6 +2,7 @@ const validateForm = (formData) => {
     const errors = [];
 
     for (const key in formData) {
+        console.log("Inside validate form")
         const value = formData[key];
 
         // Check if the value is an object or an empty string

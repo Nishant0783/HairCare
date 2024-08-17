@@ -22,6 +22,13 @@ const userSchema = new Schema(
             lowercase: true,
             trim: true
         },
+        gender: {
+            type: String,
+            required: true,
+            lowercase: true,
+            trim: true,
+            enum: ['male', 'female', 'other']
+        },
         image: {
             type: String,
             required: true,
@@ -45,8 +52,8 @@ const userSchema = new Schema(
             enum: ['low', 'medium', 'high']
         }
     }, {
-        timestamps: true
-    }
+    timestamps: true
+}
 )
 
 export const User = mongoose.model("User", userSchema);

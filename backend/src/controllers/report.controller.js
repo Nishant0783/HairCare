@@ -42,9 +42,9 @@ const generateDetailedReportController = asyncHandler( async (req, res) => {
 
     const convertedImg = await imageToBase64(req.file)
 
-    const { username, email, number, dob, familyHistory, stressLevel } = req.body
+    const { username, email, number, gender, dob, familyHistory, stressLevel } = req.body
     if(
-        [ username, email, number, dob, familyHistory, stressLevel ].some((field) => (
+        [ username, email, number, dob, gender, familyHistory, stressLevel ].some((field) => (
             field.trim() === ""
         ))
     ) {
@@ -55,12 +55,12 @@ const generateDetailedReportController = asyncHandler( async (req, res) => {
         username,
         email, 
         number, 
+        gender,
         image: convertedImg, 
         dob, 
         familyHistory, 
         stressLevel
     })
-    console.log("User is: ", user)
 
     const createdUser = await User.findById(user._id);
     
