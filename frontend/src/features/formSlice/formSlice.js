@@ -7,6 +7,7 @@ const initialState = {
         number: '',
     },
     step: 1,
+    isHairfall: null
 };
 
 const formSlice = createSlice({
@@ -19,8 +20,11 @@ const formSlice = createSlice({
         setStep: (state, action) => {
             state.step = action.payload;
         },
+        setHairfall: (state, action) => {
+            state.isHairfall = action.payload;
+        }
     },
 });
 
-export const { setPersonalDetails, setStep } = formSlice.actions;
+export const { setPersonalDetails, setStep, setHairfall } = formSlice.actions;
 export default formSlice.reducer;

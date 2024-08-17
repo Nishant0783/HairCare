@@ -22,7 +22,7 @@ const analyzeImageController = asyncHandler( async (req, res) => {
     console.log("Result of image analysis is: ", result)
 
     return res.status(201).json(
-        new ApiResponse(200, result, "Image is of hairfall")
+        new ApiResponse(200, {isHairfall: result.isHairfall}, "Image is of hairfall")
     )
 });
 

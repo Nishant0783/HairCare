@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setHairfall } from '../../features/formSlice/formSlice';
 
-const ImageUpload = ({ onImageUpload, error=false }) => {
+const ImageUpload = ({ onImageUpload, error = false }) => {
     const [image, setImage] = useState(null);
-
-    const handleImageChange = (e) => {
+    const [loading, setLoading] = useState(false);
+    const [isHairfall, setIsHairfall] = useState(null);
+    const dispatch = useDispatch()
+ 
+    const handleImageChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -12,6 +18,28 @@ const ImageUpload = ({ onImageUpload, error=false }) => {
             };
             reader.readAsDataURL(file);
             onImageUpload(file);
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                setLoading(true);
+                const response = await axios.post('http://localhost:5000/api/v1/report/analyzeImage', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }); 
+                console.log("response is: ", response.data.data.isHairfall)
+                setIsHairfall(response.data.data.isHairfall);
+                dispatch(setHairfall(response.data.data.isHairfall))
+
+            } catch (error) {
+                // Handle error response
+                console.log(error)
+                console.error('Error uploading image:', error.response?.data || error.message);
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -35,6 +63,8 @@ const ImageUpload = ({ onImageUpload, error=false }) => {
                     </div>
                 )}
             </div>
+            {(isHairfall !== null && isHairfall === false) && <p className='font-content text-red-500'>Image is not of hairfall</p>}
+            {(isHairfall !== null && isHairfall === true) && <p className='font-content text-green-500'>Image is of hairfall</p>}
         </div>
     );
 };
