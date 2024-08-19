@@ -3,18 +3,9 @@ import cors from 'cors';
 
 const app = express();
 
-const allowedOrigins = [process.env.CORS_ORIGIN, 'https://hair-care-production.vercel.app'];
-
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true
-}));
+    origin: process.env.CORS_ORIGIN,
+}))
 
 // Express accepting JSON
 app.use(express.json({
