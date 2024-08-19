@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+import React from 'react'
+import { RouterProvider } from 'react-router-dom'
+import router from './Routes/router';
+
+const App = () => {
+  return (
+    <RouterProvider router={router} />
+  )
+}
+
+export default App
+=======
 import React, { useState } from 'react';
 import FormStep from './FormStep';
 import './index.css';
@@ -144,3 +157,4 @@ const App = () => {
 };
 
 export default App;
+>>>>>>> master

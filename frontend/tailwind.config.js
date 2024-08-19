@@ -5,16 +5,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
-  },
-  plugins: [
-    function({addUtilities}) {
-      const extendLinethrough = {
-        '.line-through': {
-          'text-decoration-color': 'red'
-        },
+    extend: {
+      fontFamily: {
+        'title': ['Roboto', 'sans-serif'],
+        'content': ['Nunito sans', 'sans-serif']
+      },
+      colors: {
+        'btn': '#047FFF',
+        'btn-text': '#FFFFFF',
+        'content': '#31304E',
+        'label': '#6b7280'
       }
-      addUtilities(extendLinethrough)
-    }
-  ],
+    },
+  }
 }
