@@ -24,7 +24,7 @@ const ImageUpload = ({ onImageUpload, error = false }) => {
 
             try {
                 setLoading(true);
-                const response = await axios.post('http://localhost:5000/api/v1/report/analyzeImage', formData, {
+                const response = await axios.post('https://haircare-xmpz.onrender.com/api/v1/report/analyzeImage', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
