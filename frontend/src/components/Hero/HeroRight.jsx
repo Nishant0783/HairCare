@@ -1,8 +1,7 @@
 import React from 'react'
 import doctorMd from '../../../public/doctor1.png'
 import doctorSm from '../../../public/doctor2.png'
-import Badge from '../Badges/Badge'
-import badges from './badges';
+
 
 const HeroRight = () => {
   return (
