@@ -81,7 +81,7 @@ const FormComplex = () => {
             }));
 
             // Make the API request
-            const response = await axios.post('https://haircare-production.onrender.com/api/v1/report/generateReport', formDataToSend, {
+            const response = await axios.post('https://haircare-xmpz.onrender.com/api/v1/report/generateReport', formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
