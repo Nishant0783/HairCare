@@ -5,8 +5,9 @@ import Button from '../Button/Button';
 import { validateForm } from '../../utils/formValidations';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setGeneticDetails } from '../../features/formSlice/formSlice';
+import { setGeneticDetails, setStep } from '../../features/formSlice/formSlice';
 import axios from 'axios';
+import { setReport } from '../../features/reportSlice/reportSlice';
 
 const FormComplex = () => {
     const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ const FormComplex = () => {
     const { name, email, number } = useSelector((state) => state.form.personalDetails)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [compError, setCompError] = useState('')
 
     const today = new Date().toISOString().split('T')[0];
 
@@ -85,11 +87,16 @@ const FormComplex = () => {
                 },
             });
 
-            console.log("Response from report: ", response.data);
+            console.log("Response from report: ", response.data.data.report);
             // Handle response (e.g., navigate to another page or update the state)
-
+            dispatch(setReport(response.data.data.report))
+            navigate('/result')
         } catch (error) {
-            console.log("Error in form complex: ", error);
+            console.log(error)
+            console.log(error.response.status)
+            if (error.response.status === 500) {
+                setCompError(error.response.statusText)
+            }
             // Handle error (e.g., show an error message)
         } finally {
             setLoading(false);
@@ -163,7 +170,7 @@ const FormComplex = () => {
 
                     </div>
                 </div>
-
+                {compError !== '' && <p className='text-red-500 text-center'>{`${compError}, Please reload the page and try with different email`}</p>}
                 <div className='flex justify-center mt-[50px]'>
                     <Button
                         type={'submit'}
